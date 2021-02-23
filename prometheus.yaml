@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: example
+  namespace: saberkan-application-poc
+  labels:
+    prometheus: k8s
+spec:
+  alerting:
+    alertmanagers:
+      - name: alertmanager-main
+        namespace: monitoring
+        port: web
+  replicas: 1
+  ruleSelector: {}
+  securityContext: {}
+  serviceAccountName: prometheus-k8s
+  serviceMonitorSelector: {}
+  thanos:
+    minTime: 1m
+    objectStorageConfig:
+      key: thanos
+      name: minio
+
