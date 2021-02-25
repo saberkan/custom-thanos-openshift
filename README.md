@@ -12,16 +12,17 @@ $ oc create -f secret-sidecar.yaml
 $ oc create -f prometheus.yaml
 </pre>
 
-# TODO
-- Fix prometheus proxy
+
+# Adding prom-label-proxy in front of thanos (for rbac)
 Source: https://github.com/prometheus-community/prom-label-proxy 
 
 <pre>
-$ ~/go/bin/prom-label-proxy \
-    -label prometheus_replica \
-    -upstream http://thanos-query-saberkan-thanos-poc.apps.ocp.prod.redlabclub.eu \
-    -insecure-listen-address 0.0.0.0:8080
-$ curl http://localhost:8080/api/v1/query\?query\=\"up\"\&prometheus_replica\=\"prometheus-example-0\" 
+$ oc new-project saberkan-thanos-proxy
+$ oc create -f thanos-kube-rbac-proxy.yaml
+$ TOKEN=$(oc whoami -t)
+$ curl -H 'Accept: application/json' -H "Authorization: Bearer ${TOKEN}" http://thanos-rbac-proxy-insecure-saberkan-thanos-proxy.apps.ocp.prod.redlabclub.eu/api/v1/query?query=up\&namespace=saberkan-application-poc
 </pre>
 
-- Add nginx in front of prometheus proxy
+# TODO
+- Add nginx in front of prom-label-proxy to add namespace in uri
+- Add oauth-proxy in front of nginx to check access into route
