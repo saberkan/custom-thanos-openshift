@@ -4,10 +4,11 @@ https://docs.bitnami.com/kubernetes/infrastructure/thanos/administration/enable-
 
 # Install
 <pre>
-$ oc project saberkan-thanos-poc
+$ oc new-project saberkan-thanos-poc
 $ helm install thanos thanos
 
-$ oc project saberkan-application-poc
+$ oc new-project saberkan-application-poc
+# Install prometheus operator from operatorhub on namespace
 $ oc create -f secret-sidecar.yaml
 $ oc create -f prometheus.yaml
 </pre>
